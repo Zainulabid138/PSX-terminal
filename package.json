@@ -15,7 +15,8 @@
     "pack": "vite build && electron-builder --dir",
     "mobile:sync": "vite build && cap sync android",
     "mobile:open": "cap open android",
-    "mobile:apk": "vite build && cap sync android && cd android && gradlew.bat assembleDebug"
+    "mobile:apk": "vite build && cap sync android && cd android && gradlew.bat assembleDebug",
+    "cap:sync": "cap sync android"
   },
   "build": {
     "appId": "com.psxterminal.app",
