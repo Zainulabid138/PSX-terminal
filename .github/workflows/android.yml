@@ -31,9 +31,6 @@ jobs:
       # (ANDROID_HOME / ANDROID_SDK_ROOT are set), so no setup-android action is
       # needed — Gradle auto-downloads any missing platform/build-tools.
 
-      - name: Versions
-        run: node -v && npm -v && npx cap --version
-
       - name: Install dependencies
         run: npm install --no-audit --no-fund
 
