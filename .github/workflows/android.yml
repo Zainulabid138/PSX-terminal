@@ -27,11 +27,12 @@ jobs:
           distribution: temurin
           java-version: '21'   # Capacitor 8 / Android Gradle Plugin require JDK 21
 
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
+      # ubuntu-latest ships the Android SDK pre-installed with licenses accepted
+      # (ANDROID_HOME / ANDROID_SDK_ROOT are set), so no setup-android action is
+      # needed — Gradle auto-downloads any missing platform/build-tools.
 
       - name: Install dependencies
-        run: npm install
+        run: npm install --no-audit --no-fund
 
       - name: Build web + sync Capacitor
         run: |
@@ -39,7 +40,12 @@ jobs:
           npx cap sync android
 
       - name: Build debug APK
-        run: cd android && chmod +x gradlew && ./gradlew assembleDebug
+        env:
+          ANDROID_HOME: ${{ env.ANDROID_SDK_ROOT }}
+        run: |
+          cd android
+          chmod +x gradlew
+          ./gradlew assembleDebug --no-daemon --stacktrace
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
