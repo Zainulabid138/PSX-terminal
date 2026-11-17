@@ -1,0 +1,64 @@
+{
+  "name": "psx-terminal",
+  "version": "1.1.1",
+  "description": "PSX Terminal - A premium Pakistan Stock Exchange desktop terminal with real-time data, technical analysis, and probability-based AI scanning.",
+  "author": "PSX Terminal",
+  "license": "MIT",
+  "main": "electron/main.js",
+  "scripts": {
+    "dev": "concurrently -k -n VITE,ELECTRON -c green,blue \"npm:dev:vite\" \"npm:dev:electron\"",
+    "dev:vite": "vite",
+    "dev:electron": "wait-on tcp:5173 && cross-env VITE_DEV_SERVER_URL=http://localhost:5173 node scripts/start-electron.cjs",
+    "build": "vite build",
+    "start": "npm run build && node scripts/start-electron.cjs",
+    "dist": "vite build && electron-builder",
+    "pack": "vite build && electron-builder --dir",
+    "mobile:sync": "vite build && cap sync android",
+    "mobile:open": "cap open android",
+    "mobile:apk": "vite build && cap sync android && cd android && gradlew.bat assembleDebug"
+  },
+  "build": {
+    "appId": "com.psxterminal.app",
+    "productName": "PSX Terminal",
+    "files": [
+      "dist/**/*",
+      "electron/**/*",
+      "package.json"
+    ],
+    "directories": {
+      "output": "release"
+    },
+    "win": {
+      "target": "nsis"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "PSX Terminal"
+    }
+  },
+  "dependencies": {
+    "@capacitor/android": "^8.5.3",
+    "@capacitor/app": "^8.1.2",
+    "@capacitor/cli": "^8.5.3",
+    "@capacitor/core": "^8.5.3",
+    "@capacitor/local-notifications": "^8.3.1",
+    "@capacitor/preferences": "^8.0.1",
+    "cheerio": "^1.0.0",
+    "lightweight-charts": "^4.2.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.1",
+    "concurrently": "^9.0.1",
+    "cross-env": "^7.0.3",
+    "electron": "^32.1.0",
+    "electron-builder": "^25.0.5",
+    "vite": "^5.4.8",
+    "wait-on": "^8.0.1"
+  }
+}
